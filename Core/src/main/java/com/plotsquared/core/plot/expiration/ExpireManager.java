@@ -57,6 +57,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -68,7 +69,7 @@ public class ExpireManager {
     private final ConcurrentHashMap<UUID, Long> account_age_cache;
     private final EventDispatcher eventDispatcher;
     private final ArrayDeque<ExpiryTask> tasks;
-    private volatile HashSet<Plot> plotsToDelete;
+    private volatile Set<Plot> plotsToDelete;
     /**
      * 0 = stopped, 1 = stopping, 2 = running
      */
@@ -186,7 +187,7 @@ public class ExpireManager {
             public void run(Plot plot, Runnable runnable, Boolean confirm) {
                 if (confirm) {
                     if (plotsToDelete == null) {
-                        plotsToDelete = new HashSet<>();
+                        plotsToDelete = Collections.synchronizedSet(new HashSet<>());
                     }
                     plotsToDelete.add(plot);
                     runnable.run();
@@ -404,7 +405,7 @@ public class ExpireManager {
     }
 
     public HashSet<Plot> getPendingExpired() {
-        return plotsToDelete == null ? new HashSet<>() : plotsToDelete;
+        return plotsToDelete == null ? new HashSet<>() : new HashSet<>(plotsToDelete);
     }
 
     public void deleteWithMessage(Plot plot, Runnable whenDone) {
