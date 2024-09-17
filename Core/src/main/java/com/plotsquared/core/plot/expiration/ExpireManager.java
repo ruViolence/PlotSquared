@@ -19,6 +19,7 @@
 package com.plotsquared.core.plot.expiration;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.plotsquared.core.PlotSquared;
 import com.plotsquared.core.configuration.caption.Caption;
 import com.plotsquared.core.configuration.caption.TranslatableCaption;
@@ -60,6 +61,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+@Singleton
 public class ExpireManager {
 
     private final ConcurrentHashMap<UUID, Long> dates_cache;
