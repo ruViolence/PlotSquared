@@ -311,7 +311,7 @@ public class BukkitRegionManager extends RegionManager {
         int tz = pos2.getZ();
         for (Entity entity : entities) {
             if (!(entity instanceof Player)) {
-                org.bukkit.Location location = entity.getLocation();
+                org.bukkit.Location location = entity.getLocation().toBlockLocation();
                 if (location.getX() >= bx && location.getX() <= tx && location.getZ() >= bz && location.getZ() <= tz) {
                     if (entity.hasMetadata("ps-tmp-teleport")) {
                         continue;
